@@ -31,6 +31,28 @@ router.post("/", async (req, res) => {
 });
 
 // POST - "/api/posts/:id/comments"
+router.post("/:id/comments", async (req, res) => {
+  const commentInfo = { ...req.body, post_id: req.params.id };
+  //messages should have text and a post_id.
+
+  try {
+    const saved = await db.addMessage(commentInfo);
+    if (commentInfo.length) {
+      res.status(201).json(saved);
+    } else {
+      res
+        .status(404)
+        .json({
+          errorMessage: "The post with the specified ID does not exist"
+        });
+    }
+  } catch (err) {
+    res.status(400).json({
+      errorMessage: "Please provide text for the comment.",
+      err
+    });
+  }
+});
 
 // GET - "/api/posts"
 router.get("/", async (req, res) => {
