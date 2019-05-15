@@ -69,6 +69,17 @@ router.get("/:id", async (req, res) => {
 // GET - "/api/posts/:id/comments"
 
 // DELETE - "/api/posts/:id"
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  db.remove(id)
+    .then(removedPost => {
+      res.json(removedPost);
+    })
+    .catch(err => {
+      res.status(400).send(err);
+    });
+});
 
 // PUT - "/api/posts/:id"
 router.put("/:id", async (req, res) => {
