@@ -67,6 +67,25 @@ router.get("/:id", async (req, res) => {
 });
 
 // GET - "/api/posts/:id/comments"
+router.get("/:id/comments", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const comments = await db.findPostComments(id);
+
+    if (comments.length) {
+      res.json(comments);
+    } else {
+      res
+        .status(404)
+        .json({ err: "The post with the specified ID does not exist." });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "The comments information could not be retrieved." });
+  }
+});
 
 // DELETE - "/api/posts/:id"
 router.delete("/:id", (req, res) => {
