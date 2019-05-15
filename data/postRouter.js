@@ -36,15 +36,14 @@ router.post("/:id/comments", async (req, res) => {
   //messages should have text and a post_id.
 
   try {
-    const saved = await db.addMessage(commentInfo);
-    if (commentInfo.length) {
+    const saved = await db.insertComment(commentInfo);
+    console.log(commentInfo);
+    if (commentInfo) {
       res.status(201).json(saved);
     } else {
-      res
-        .status(404)
-        .json({
-          errorMessage: "The post with the specified ID does not exist"
-        });
+      res.status(404).json({
+        errorMessage: "The post with the specified ID does not exist"
+      });
     }
   } catch (err) {
     res.status(400).json({
